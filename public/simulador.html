@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>IMMUNCOLD | SIMULADOR FINANCEIRO</title>
+
+    <script src="./js/funcoes.js"></script>
+
+    <link rel="icon" href="../public/assets/img/logo_icon_nav.png">
+    <link rel="stylesheet" href="./css/style_calculadora.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+
+</head>
+
+<body>
+
+    <!--header inicio-->
+    <div class="header">
+        <div class="container">
+            <p class="title">IMMUNCOLD</p>
+            <ul class="navbar">
+                <li><a href="./index.html">Inicio</a></li>
+
+                <li><a class="agora">Simulador</a></li>
+                
+                <li><a href="./login.html">Login</a></li>
+                
+                <li><a href="./cadastro.html">Cadastro</a></li>
+            </ul>
+        </div>
+    </div>
+
+
+    <!-- simulador inicio -->
+    <div class="banner">
+        <div class="container login">
+            <div class="card-calculadora">
+            <h2>Simulador financeiro</h2>
+                <form>
+                    <label>Quantidade de vacinas vendidas</label>
+                   <input type="number" placeholder="Digite um valor. Ex: 0" id="input_qtda_vacinas_vendidas">
+
+                   <label>Quantidade de vacinas descartadas</label>
+                   <input type="number" placeholder="Digite um valor. Ex: 0" id="input_qtda_vacinas_descartdas">
+
+                   <label>Valor por vacina</label>
+                   <input type="number" placeholder="Digite um valor. Ex: 0" id="input_valor_pago">
+
+                   <button type="button" onclick="calcular()">Calcular perda</button>
+                </form>
+            </div>
+            <div id="resultado"></div>
+        </div>
+        </div>
+    <!-- simulador fim -->
+
+    <!--footer inicio-->
+    <div class="footer">
+        <div class="container">
+            <h5>IMMUNCOLD company. Todos os direitos reservados &copy; 2022</h5>
+        </div>
+    </div>
+    <!--footer fim-->
+
+
+</body>
+
+</html>
+
+<script>
+    function calcular() {
+        var vendidas = Number(input_qtda_vacinas_vendidas.value)
+        var descarte = Number(input_qtda_vacinas_descartdas.value)
+        var custoVacina = Number(input_valor_pago.value)
+
+        var valPerdido = descarte * custoVacina
+        var perdaPorc = valPerdido * 0.80
+
+        resultado.innerHTML = ` <div class="resultado_simulador">Notamos que você teve uma perda de: ${valPerdido. toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})} sem nossos serviços. 
+        Com o <b>IMMUNCOLD</b> você deixaria de perder <b>80%</b> deste valor: ${perdaPorc. toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})} </div>`
+    }
+</script>

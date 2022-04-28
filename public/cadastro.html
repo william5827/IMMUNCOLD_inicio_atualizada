@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>IMMUNCOLD | CADASTRO</title>
+
+
+    <script src="js/funcoes.js"></script>
+
+    <link rel="icon" href="../public/assets/img/logo_icon_nav.png">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+   
+</head>
+
+<body>
+
+    <!--header inicio-->
+    <div class="header">
+        <div class="container">
+            <p class="title">IMMUNCOLD</p>
+            <ul class="navbar">
+
+                <li><a href="./index.html">Inicio</a></li>
+                <li><a href="./simulador.html">Simulador</a></li>
+                <li><a href="./login.html">Login</a></li>
+                <li class="agora"><a href="./cadastro.html">Cadastro</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!--header fim-->
+
+
+    <div class="banner">
+        <div class="container login">
+            <div class="card_erro" id="cardErro">
+                <span id="mensagem_erro"></span>
+            </div>
+            <div class="card-cadastro">
+                <h2>Cadastrar</h2>
+                    <form>
+                    <div class="cards_input nome">
+                    <input id="nomeInput" type="text" placeholder="Digite seu nome" required minlength="2" maxlength="50">
+                    <input id="representanteInput" type="text" placeholder="Digite o nome da empresa" required minlength="2" maxlength="50">
+                    </div>
+
+                    <div class="cards_cpnj">
+                    <input id="cnpjInput" type="text" placeholder="Digite seu CNPJ" required minlength="14" maxlength="18">
+                    <input id="cepInput" type="text" placeholder="Digite seu CEP" required maxlength="50">
+                    </div>
+
+                    <div class="cards_endereco">
+                    <input id="enderecoInput" type="text" placeholder="Digite seu endereço" required maxlength="150">
+                    <input id="telefoneInput" type="text" placeholder="(xx)xxxx-xxxx" required maxlength="14">
+                    </div>
+                    
+                    <div class="card_email">
+                    <input id="emailInput" type="text" placeholder="Digite seu email" required maxlength="65">
+                    </div>
+                    
+                    <div class="cards_senha">
+                    <input id="senhaInput" type="password" placeholder="******" required minlength="6" maxlength="25">
+                    <input id="confirmacaoSenhaInput" type="password" placeholder="******" required minlength="6" maxlength="25">
+                    </div>
+
+                    <button type="button" class="btn" onclick="cadastrar()">Cadastrar</button>
+                </form>
+                </div>
+            </div>
+        </div>
+        </div>
+    <!--footer inicio-->
+    <div class="footer">
+        <div class="container">
+          <h5>IMMUNCOLD company. Todos os direitos reservados &copy; 2022</h5>
+        </div>
+      </div> 
+    <!--footer fim-->
+
+
+</body>
+
+</html>
+
+<script>
+    function cadastrar() {
+        // aguardar();
+
+        //Recupere o valor da nova input pelo nome do id
+        // Agora vá para o método fetch logo abaixo
+        var nomeVar = nomeInput.value;
+        var emailVar = emailInput.value;
+        var senhaVar = senhaInput.value;
+        var confirmacaoSenhaVar = confirmacaoSenhaInput.value;
+        var representanteVar = representanteInput.value;
+        var cnpjVar = cnpjInput.value;
+        var cepVar = cepInput.value;
+        var enderecoVar = enderecoInput.value;
+        var telefoneVar = telefoneInput.value;
+
+        if (nomeVar == "" || emailVar == "" || senhaVar == "" || confirmacaoSenhaVar == "") {
+            cardErro.style.display = "block"
+            mensagem_erro.innerHTML = "Preencha todos os campos para prosseguir!";
+
+            finalizarAguardar();
+            return false;
+        }
+        else {
+            setInterval(sumirMensagem, 5000)
+        }
+
+        if (emailVar.indexOf("@") == -1 || emailVar.indexOf(".com") == -1) {
+            cardErro.style.display = "block"
+            mensagem_erro.innerHTML = "Ops, e-mail inválido! Verifique e tente novamente.";
+            finalizarAguardar();
+            return false;
+        }
+        else {
+            setInterval(sumirMensagem, 5000)
+        }
+
+        if (senhaVar != confirmacaoSenhaVar) {
+            cardErro.style.display = "block"
+            mensagem_erro.innerHTML = "As senhas inseridas devem ser iguais para prosseguir!";
+            finalizarAguardar();
+            return false;
+        }
+        else {
+            setInterval(sumirMensagem, 5000)
+        }
+
+        // Enviando o valor da nova input
+        fetch("/usuarios/cadastrar", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                // crie um atributo que recebe o valor recuperado aqui
+                // Agora vá para o arquivo routes/usuario.js
+                nomeServer: nomeVar,
+                emailServer: emailVar,
+                senhaServer: senhaVar,
+                representanteServer: representanteVar,
+                cnpjServer: cnpjVar,
+                cepServer: cepVar,
+                enderecoServer: enderecoVar,
+                telefoneServer: telefoneVar
+            })
+        }).then(function (resposta) {
+
+            console.log("resposta: ", resposta);
+
+            if (resposta.ok) {
+                cardErro.style.display = "block"
+                mensagem_erro.innerHTML = "Cadastro realizado com sucesso!";
+                window.location = 'login.html';
+            } else {
+                throw ("Houve um erro ao tentar realizar o cadastro!");
+            }
+        }).catch(function (resposta) {
+            console.log(`#ERRO: ${resposta}`);
+            
+        });
+
+        return false;
+    }
+
+    function sumirMensagem() {
+        cardErro.style.display = "none"
+    }
+
+</script>
